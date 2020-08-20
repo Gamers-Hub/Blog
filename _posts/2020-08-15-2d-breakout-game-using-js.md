@@ -329,4 +329,4 @@ function drawLives() {
 draw();
 {% endhighlight %}
 
-Thats all ! You can play the game here - [https://gamershub.in/breakout-2d/index.html](https://gamershub.in/breakout-2d/index.html)
+Thats all ! You can play the game here - [https://gamershub.in/games/breakout-2d/index.html](https://gamershub.in/games/breakout-2d/index.html)
