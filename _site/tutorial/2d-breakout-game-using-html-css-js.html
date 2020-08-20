@@ -6,9 +6,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>2D Breakout Game using HTML5, CSS and JavaScript</title>
-  <meta name="description" content="2D Breakout Game using HTML5, CSS and JavaScript">
+  <meta name="description" content="2D Breakout Game using HTML5 Canvas , CSS and JavaScript">
   <link rel="canonical" href="https://blog.gamershub.in//tutorial/2d-breakout-game-using-html-css-js">
-  <link rel="alternate" type="application/rss+xml" title="Gamers Hub" href="https://blog.gamershub.in//feed.xml">
+  <link rel="alternate" type="application/rss+xml" title="GamersHub - Blog" href="https://blog.gamershub.in//feed.xml">
 
   <style type="text/css">
     
@@ -30,7 +30,7 @@
   <div class="row">
 
     <div class="column small-10 large-12">
-      <h1 class="sidebar__logo logo"><a href="/">Gamers Hub</a></h1>
+      <h1 class="sidebar__logo logo"><a href="/">GamersHub - Blog</a></h1>
       <div class="sidebar__description font-small">Articles on Game Development and Gaming</div>
     </div>
 
@@ -114,7 +114,7 @@
       <div class="sidebar__bottom">
         <div class="column small-12 large-12">
           <div class="font-tiny">
-            &copy; 2020 Gamers Hub
+            &copy; 2020 GamersHub - Blog
           </div>
         </div>
       </div>
@@ -173,9 +173,321 @@
         </header>
 
         <div class="post-content" itemprop="articleBody">
-          <h2 id="d-breakout-game-using-html5-css-and-javascript">2D Breakout Game using HTML5, CSS and JavaScript</h2>
+          <p>2D Breakout Game using HTML5 Canvas , CSS and JavaScript</p>
 
-<p>Lets built a simple game using JavaScript</p>
+<h2 id="step-1-initialize-canvas">Step 1. Initialize Canvas</h2>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;title&gt;</span>Gamershub - Breakout 2D<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">type=</span><span class="s">"text/css"</span> <span class="na">href=</span><span class="s">"style.css"</span><span class="nt">/&gt;</span>
+   <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+     <span class="nt">&lt;canvas</span> <span class="na">id=</span><span class="s">"gameContainer"</span> <span class="na">width=</span><span class="s">"480"</span> <span class="na">height=</span><span class="s">"320"</span><span class="nt">&gt;&lt;/canvas&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"app.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span></code></pre></figure>
+
+<h2 id="step-2-styling-canvas">Step 2. Styling Canvas</h2>
+
+<p>Add this in style.css</p>
+
+<figure class="highlight"><pre><code class="language-css" data-lang="css">      <span class="nt">body</span> <span class="p">{</span>
+        <span class="nl">background</span><span class="p">:</span> <span class="no">white</span><span class="p">;</span> <span class="c">/* try type yellow */</span>
+        <span class="nl">color</span><span class="p">:</span> <span class="m">#323232</span><span class="p">;</span>
+        <span class="nl">margin</span><span class="p">:</span><span class="m">0</span><span class="p">;</span>
+        <span class="nl">width</span><span class="p">:</span> <span class="m">100%</span><span class="p">;</span>
+        <span class="nl">height</span><span class="p">:</span> <span class="m">100vh</span><span class="p">;</span>
+        <span class="nl">align-items</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
+        <span class="nl">justify-content</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
+        <span class="nl">font-family</span><span class="p">:</span> <span class="n">Helvetica</span> <span class="n">neue</span><span class="p">,</span> <span class="n">roboto</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="nf">#gameContainer</span><span class="p">{</span>
+          <span class="nl">border</span><span class="p">:</span> <span class="m">1px</span> <span class="nb">solid</span> <span class="m">#111</span><span class="p">;</span>
+          <span class="nl">margin-left</span><span class="p">:</span><span class="m">33%</span><span class="p">;</span>
+          <span class="nl">margin-top</span><span class="p">:</span> <span class="m">100px</span><span class="p">;</span>
+          <span class="nl">max-width</span><span class="p">:</span> <span class="m">100%</span><span class="p">;</span>
+      <span class="p">}</span>
+
+
+      <span class="k">@media</span> <span class="n">only</span> <span class="n">screen</span> <span class="n">and</span> <span class="p">(</span><span class="n">max-width</span><span class="p">:</span> <span class="m">600px</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">#gameContainer</span><span class="p">{</span>
+          <span class="nl">border</span><span class="p">:</span> <span class="m">1px</span> <span class="nb">solid</span> <span class="m">#111</span><span class="p">;</span>
+          <span class="nl">margin-left</span><span class="p">:</span> <span class="m">0</span><span class="p">;</span>
+           <span class="nl">margin-top</span><span class="p">:</span> <span class="m">0</span><span class="cp">!important</span><span class="p">;</span>
+           <span class="nl">width</span><span class="p">:</span><span class="m">100%</span><span class="p">;</span>
+           <span class="nl">height</span><span class="p">:</span> <span class="nb">auto</span><span class="p">;</span>
+         <span class="p">}</span>
+     <span class="p">}</span></code></pre></figure>
+
+<h1 id="step-3-game-logic-appjs">Step 3. Game Logic (App.js)</h1>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="cm">/*
+* Name : Breakout 2D
+* URI : https://gamershub.in/breakout-2d
+*/</span>
+
+
+<span class="c1">// get the canvas container</span>
+<span class="kd">let</span> <span class="nx">canvas</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'gameContainer'</span><span class="p">);</span>
+
+<span class="c1">// store the 2d rendering context</span>
+<span class="kd">let</span> <span class="nx">ctx</span> <span class="o">=</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">getContext</span><span class="p">(</span><span class="s1">'2d'</span><span class="p">);</span>
+
+<span class="c1">// score</span>
+<span class="kd">let</span> <span class="nx">score</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="c1">// lives (chances)</span>
+<span class="kd">let</span> <span class="nx">lives</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+
+<span class="c1">// cordinates</span>
+<span class="kd">let</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">height</span> <span class="o">-</span> <span class="mi">30</span><span class="p">;</span>
+
+<span class="c1">// shift / motion speed</span>
+<span class="kd">let</span> <span class="nx">dx</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">dy</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="p">;</span>
+
+<span class="c1">// bricks</span>
+<span class="kd">let</span> <span class="nx">brickRowCount</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span> <span class="c1">// Number of rows to show bricks</span>
+<span class="kd">let</span> <span class="nx">brickColumnCount</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span> <span class="c1">// Number of columns to show bricks</span>
+<span class="kd">let</span> <span class="nx">brickWidth</span> <span class="o">=</span> <span class="mi">75</span><span class="p">;</span> <span class="c1">// width of brick</span>
+<span class="kd">let</span> <span class="nx">brickHeight</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span> <span class="c1">// height of brick</span>
+<span class="kd">let</span> <span class="nx">brickGap</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> <span class="c1">// gap between bricks</span>
+<span class="kd">let</span> <span class="nx">brickOffsetTop</span> <span class="o">=</span> <span class="mi">30</span><span class="p">;</span> <span class="c1">// offset from top of canvas</span>
+<span class="kd">let</span> <span class="nx">brickOffsetLeft</span> <span class="o">=</span> <span class="mi">30</span><span class="p">;</span> <span class="c1">// offset from left of canvas</span>
+
+<span class="c1">// two dimensional array to display bricks</span>
+<span class="kd">let</span> <span class="nx">bricks</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">c</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">c</span> <span class="o">&lt;</span> <span class="nx">brickColumnCount</span><span class="p">;</span> <span class="nx">c</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">bricks</span><span class="p">[</span><span class="nx">c</span><span class="p">]</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">r</span> <span class="o">&lt;</span> <span class="nx">brickRowCount</span><span class="p">;</span> <span class="nx">r</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">bricks</span><span class="p">[</span><span class="nx">c</span><span class="p">][</span><span class="nx">r</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">status</span><span class="p">:</span> <span class="mi">1</span> <span class="p">};</span> <span class="c1">// positions of bricks (x,y, status_of_visibility)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// ball</span>
+<span class="kd">let</span> <span class="nx">ballRadius</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+
+<span class="c1">// paddle</span>
+<span class="kd">let</span> <span class="nx">paddleHeight</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">paddleWidth</span> <span class="o">=</span> <span class="mi">75</span><span class="p">;</span>
+
+<span class="c1">// paddle x-axis position</span>
+<span class="kd">let</span> <span class="nx">paddleX</span> <span class="o">=</span> <span class="p">(</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="nx">paddleWidth</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+<span class="c1">// paddle y-axis position</span>
+<span class="kd">let</span> <span class="nx">paddleY</span> <span class="o">=</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">height</span> <span class="o">-</span> <span class="nx">paddleHeight</span><span class="p">;</span>
+
+<span class="c1">// control (left key and right key)</span>
+<span class="kd">let</span> <span class="nx">rightPressed</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">leftPressed</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+<span class="c1">// create bricks</span>
+<span class="kd">function</span> <span class="nx">drawBricks</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">c</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">c</span> <span class="o">&lt;</span> <span class="nx">brickColumnCount</span><span class="p">;</span> <span class="nx">c</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">r</span> <span class="o">&lt;</span> <span class="nx">brickRowCount</span><span class="p">;</span> <span class="nx">r</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">// show the bricks if the ball was not hit</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">bricks</span><span class="p">[</span><span class="nx">c</span><span class="p">][</span><span class="nx">r</span><span class="p">].</span><span class="nx">status</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// defining the position of individual bricks</span>
+        <span class="kd">let</span> <span class="nx">brickX</span> <span class="o">=</span> <span class="nx">c</span> <span class="o">*</span> <span class="p">(</span><span class="nx">brickWidth</span> <span class="o">+</span> <span class="nx">brickGap</span><span class="p">)</span> <span class="o">+</span> <span class="nx">brickOffsetLeft</span><span class="p">;</span>
+        <span class="kd">let</span> <span class="nx">brickY</span> <span class="o">=</span> <span class="nx">r</span> <span class="o">*</span> <span class="p">(</span><span class="nx">brickHeight</span> <span class="o">+</span> <span class="nx">brickGap</span><span class="p">)</span> <span class="o">+</span> <span class="nx">brickOffsetTop</span><span class="p">;</span>
+
+        <span class="nx">bricks</span><span class="p">[</span><span class="nx">c</span><span class="p">][</span><span class="nx">r</span><span class="p">].</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">brickX</span><span class="p">;</span> <span class="c1">// set brick x cordinate</span>
+        <span class="nx">bricks</span><span class="p">[</span><span class="nx">c</span><span class="p">][</span><span class="nx">r</span><span class="p">].</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">brickY</span><span class="p">;</span> <span class="c1">// set brick y cordinate</span>
+
+        <span class="nx">ctx</span><span class="p">.</span><span class="nx">beginPath</span><span class="p">();</span>
+        <span class="nx">ctx</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="nx">brickX</span><span class="p">,</span> <span class="nx">brickY</span><span class="p">,</span> <span class="nx">brickWidth</span><span class="p">,</span> <span class="nx">brickHeight</span><span class="p">);</span>
+        <span class="nx">ctx</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">'#111'</span><span class="p">;</span>
+        <span class="nx">ctx</span><span class="p">.</span><span class="nx">fill</span><span class="p">();</span>
+        <span class="nx">ctx</span><span class="p">.</span><span class="nx">closePath</span><span class="p">();</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// create ball</span>
+<span class="kd">function</span> <span class="nx">drawBall</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">ctx</span><span class="p">.</span><span class="nx">beginPath</span><span class="p">();</span>
+  <span class="nx">ctx</span><span class="p">.</span><span class="nx">arc</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">ballRadius</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">*</span> <span class="mi">2</span><span class="p">);</span>
+  <span class="nx">ctx</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">'#111'</span><span class="p">;</span>
+  <span class="nx">ctx</span><span class="p">.</span><span class="nx">fill</span><span class="p">();</span>
+  <span class="nx">ctx</span><span class="p">.</span><span class="nx">closePath</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="c1">// create paddle</span>
+<span class="kd">function</span> <span class="nx">drawPaddle</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// check if right key is pressed</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">rightPressed</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">paddleX</span> <span class="o">+=</span> <span class="mi">7</span><span class="p">;</span>
+    <span class="c1">// if paddle width is greater than canvas width (in right direction -x )</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">paddleX</span> <span class="o">+</span> <span class="nx">paddleWidth</span> <span class="o">&gt;</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">width</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">paddleX</span> <span class="o">=</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="nx">paddleWidth</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">// if paddle width is greater than canva</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">leftPressed</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">paddleX</span> <span class="o">-=</span> <span class="mi">7</span><span class="p">;</span>
+    <span class="c1">// if paddle goes left of 0 x-axis, set paddle x to 0</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">paddleX</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">paddleX</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="nx">ctx</span><span class="p">.</span><span class="nx">beginPath</span><span class="p">();</span>
+  <span class="nx">ctx</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="nx">paddleX</span><span class="p">,</span> <span class="nx">paddleY</span><span class="p">,</span> <span class="nx">paddleWidth</span><span class="p">,</span> <span class="nx">paddleHeight</span><span class="p">);</span> <span class="c1">// x,y, width, height</span>
+  <span class="nx">ctx</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">'#111'</span><span class="p">;</span>
+  <span class="nx">ctx</span><span class="p">.</span><span class="nx">fill</span><span class="p">();</span>
+  <span class="nx">ctx</span><span class="p">.</span><span class="nx">closePath</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="c1">// game container</span>
+<span class="kd">function</span> <span class="nx">draw</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// clear canvas content</span>
+  <span class="nx">ctx</span><span class="p">.</span><span class="nx">clearRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+
+  <span class="c1">// create the bricks</span>
+  <span class="nx">drawBricks</span><span class="p">();</span>
+
+  <span class="c1">// create the ball</span>
+  <span class="nx">drawBall</span><span class="p">();</span>
+
+  <span class="c1">// create the paddle</span>
+  <span class="nx">drawPaddle</span><span class="p">();</span>
+
+  <span class="c1">// display score</span>
+  <span class="nx">drawScore</span><span class="p">();</span>
+
+  <span class="c1">//display lives</span>
+  <span class="nx">drawLives</span><span class="p">();</span>
+
+  <span class="c1">// collide with bricks</span>
+  <span class="nx">collisionDetection</span><span class="p">();</span>
+
+  <span class="c1">// ball and paddle collision detection</span>
+  <span class="c1">// reverse the direction if hit top</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">dy</span> <span class="o">&lt;</span> <span class="nx">ballRadius</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">dy</span> <span class="o">=</span> <span class="o">-</span><span class="nx">dy</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">dy</span> <span class="o">&gt;</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">height</span> <span class="o">-</span> <span class="nx">ballRadius</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// if ball hits the paddle , collide and reverse ball direction</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">x</span> <span class="o">&gt;</span> <span class="nx">paddleX</span> <span class="o">&amp;&amp;</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="nx">paddleX</span> <span class="o">+</span> <span class="nx">paddleWidth</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">dy</span> <span class="o">=</span> <span class="o">-</span><span class="nx">dy</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="c1">// if ball hits the bottom - Game Over !!</span>
+
+      <span class="c1">// decrease lives on paddle miss</span>
+      <span class="nx">lives</span><span class="o">--</span><span class="p">;</span>
+
+      <span class="c1">// if no lives game over</span>
+      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">lives</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">alert</span><span class="p">(</span><span class="s1">'Game Over !'</span><span class="p">);</span>
+        <span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">reload</span><span class="p">();</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">alert</span><span class="p">(</span><span class="s1">'Missed ! Remaining Lives :'</span> <span class="o">+</span> <span class="nx">lives</span><span class="p">);</span>
+        <span class="c1">// if lives remaining, then reset the ball position</span>
+        <span class="nx">x</span> <span class="o">=</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+        <span class="nx">y</span> <span class="o">=</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">height</span> <span class="o">-</span> <span class="mi">30</span><span class="p">;</span>
+        <span class="nx">dx</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+        <span class="nx">dy</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="p">;</span>
+        <span class="nx">paddleX</span> <span class="o">=</span> <span class="p">(</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="nx">paddleWidth</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="c1">// reverse the direction if hit  left or right wall</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">x</span> <span class="o">+</span> <span class="nx">dx</span> <span class="o">&gt;</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="nx">ballRadius</span> <span class="o">||</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">dx</span> <span class="o">&lt;</span> <span class="nx">ballRadius</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">dx</span> <span class="o">=</span> <span class="o">-</span><span class="nx">dx</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c1">// increment position of ball</span>
+  <span class="nx">x</span> <span class="o">+=</span> <span class="nx">dx</span><span class="p">;</span>
+  <span class="nx">y</span> <span class="o">+=</span> <span class="nx">dy</span><span class="p">;</span>
+  <span class="nx">requestAnimationFrame</span><span class="p">(</span><span class="nx">draw</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// check if user pressed any control (left or right key)</span>
+<span class="kd">function</span> <span class="nx">keyDownHandler</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">key</span> <span class="o">==</span> <span class="s1">'Right'</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">key</span> <span class="o">==</span> <span class="s1">'ArrowRight'</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">rightPressed</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">key</span> <span class="o">==</span> <span class="s1">'Left'</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">key</span> <span class="o">==</span> <span class="s1">'ArrowLeft'</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">leftPressed</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'keydown'</span><span class="p">,</span> <span class="nx">keyDownHandler</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+
+<span class="c1">// check if user released any control (left or right key)</span>
+<span class="kd">function</span> <span class="nx">keyUpHandler</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">key</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">key</span> <span class="o">==</span> <span class="s1">'Right'</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">key</span> <span class="o">==</span> <span class="s1">'ArrowRight'</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">rightPressed</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">key</span> <span class="o">==</span> <span class="s1">'Left'</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">key</span> <span class="o">==</span> <span class="s1">'ArrowLeft'</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">leftPressed</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'keyup'</span><span class="p">,</span> <span class="nx">keyUpHandler</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+
+<span class="c1">// check for mouse movement and update position of paddle</span>
+<span class="kd">function</span> <span class="nx">mouseMoveHandler</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">relativeX</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">clientX</span> <span class="o">-</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">offsetLeft</span><span class="p">;</span> <span class="c1">// horizontal mouse position of viewport</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nx">relativeX</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">relativeX</span> <span class="o">&lt;</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">width</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">paddleX</span> <span class="o">=</span> <span class="nx">relativeX</span> <span class="o">-</span> <span class="nx">paddleWidth</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'mousemove'</span><span class="p">,</span> <span class="nx">mouseMoveHandler</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+
+<span class="c1">// brick ball collision detection</span>
+<span class="kd">function</span> <span class="nx">collisionDetection</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">c</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">c</span> <span class="o">&lt;</span> <span class="nx">brickColumnCount</span><span class="p">;</span> <span class="nx">c</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">r</span> <span class="o">&lt;</span> <span class="nx">brickRowCount</span><span class="p">;</span> <span class="nx">r</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">let</span> <span class="nx">b</span> <span class="o">=</span> <span class="nx">bricks</span><span class="p">[</span><span class="nx">c</span><span class="p">][</span><span class="nx">r</span><span class="p">];</span> <span class="c1">//individual brick</span>
+
+      <span class="c1">// if brick is not destroyed yet</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">b</span><span class="p">.</span><span class="nx">status</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// if x position of ball is greater than x position of brick (collide brick)</span>
+        <span class="k">if</span> <span class="p">(</span>
+          <span class="nx">x</span> <span class="o">&gt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">x</span> <span class="o">&amp;&amp;</span>
+          <span class="nx">x</span> <span class="o">&lt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="nx">brickWidth</span> <span class="o">&amp;&amp;</span>
+          <span class="nx">y</span> <span class="o">&gt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">y</span> <span class="o">&amp;&amp;</span>
+          <span class="nx">y</span> <span class="o">&lt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">brickHeight</span>
+        <span class="p">)</span> <span class="p">{</span>
+          <span class="c1">// reverse direction</span>
+          <span class="nx">dy</span> <span class="o">=</span> <span class="o">-</span><span class="nx">dy</span><span class="p">;</span>
+
+          <span class="c1">// destroy brick</span>
+          <span class="nx">b</span><span class="p">.</span><span class="nx">status</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+          <span class="c1">// increment score</span>
+          <span class="nx">score</span><span class="o">++</span><span class="p">;</span>
+
+          <span class="c1">// if all bricks are destroyed</span>
+          <span class="k">if</span> <span class="p">(</span><span class="nx">score</span> <span class="o">==</span> <span class="nx">brickRowCount</span> <span class="o">*</span> <span class="nx">brickColumnCount</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">alert</span><span class="p">(</span><span class="s1">'You Win , Congratulations !'</span><span class="p">);</span>
+            <span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">reload</span><span class="p">();</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// show score</span>
+<span class="kd">function</span> <span class="nx">drawScore</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// score text</span>
+  <span class="nx">ctx</span><span class="p">.</span><span class="nx">font</span> <span class="o">=</span> <span class="s1">'16px Arial'</span><span class="p">;</span>
+  <span class="nx">ctx</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">'#111'</span><span class="p">;</span>
+  <span class="nx">ctx</span><span class="p">.</span><span class="nx">fillText</span><span class="p">(</span><span class="s1">'Score: '</span> <span class="o">+</span> <span class="nx">score</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span> <span class="c1">// text, x-axis position, y-axis position</span>
+<span class="p">}</span>
+
+<span class="c1">// show lives</span>
+<span class="kd">function</span> <span class="nx">drawLives</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">ctx</span><span class="p">.</span><span class="nx">font</span> <span class="o">=</span> <span class="s1">'16px Arial'</span><span class="p">;</span>
+  <span class="nx">ctx</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">'#111'</span><span class="p">;</span>
+  <span class="nx">ctx</span><span class="p">.</span><span class="nx">fillText</span><span class="p">(</span><span class="s1">'Lives: '</span> <span class="o">+</span> <span class="nx">lives</span><span class="p">,</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">draw</span><span class="p">();</span></code></pre></figure>
+
+<p>Thats all ! You can play the game here - <a href="https://gamershub.in/breakout-2d/index.html">https://gamershub.in/breakout-2d/index.html</a></p>
 
           <div class="post__tags">
             
